@@ -9,7 +9,7 @@
 
 /**
  * Plugin Name: VGSR Ab-actiaal Prikbord
- * Description: Het ab-actiaal prikbord, gebruikt door het bestuur.
+ * Description: Het ab-actiaal prikbord voor intern gebruik. Vereist VGSR.
  * Plugin URI:  https://github.com/vgsr/vgsr-prikbord
  * Version:     1.0.0
  * Author:      Laurens Offereins
@@ -64,13 +64,13 @@ class VGSR_Prikbord {
 		/** Paths *************************************************************/
 
 		// Setup some base path and URL information
-		$this->file         = __FILE__;
-		$this->basename     = plugin_basename( $this->file );
-		$this->plugin_dir   = plugin_dir_path( $this->file );
-		$this->plugin_url   = plugin_dir_url ( $this->file );
+		$this->file       = __FILE__;
+		$this->basename   = plugin_basename( $this->file );
+		$this->plugin_dir = plugin_dir_path( $this->file );
+		$this->plugin_url = plugin_dir_url ( $this->file );
 
 		// Languages
-		$this->lang_dir     = trailingslashit( $this->plugin_dir . 'languages' );
+		$this->lang_dir   = trailingslashit( $this->plugin_dir . 'languages' );
 
 		/** Users *************************************************************/
 
@@ -108,7 +108,9 @@ class VGSR_Prikbord {
 	 */
 	public function register_post_type() {
 		register_post_type( $this->get_post_type(), array(
-			'labels' => array( 'name' => __( 'Prikbord Items', 'vgsr-prikbord' ) ),
+			'labels' => array(
+				'name' => __( 'Prikbord Items', 'vgsr-prikbord' ),
+			),
 			'public' => is_user_vgsr() // Hide prikbord for non-vgsr
 		) );
 	}
