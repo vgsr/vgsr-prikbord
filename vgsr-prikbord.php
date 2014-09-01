@@ -8,14 +8,15 @@
  */
 
 /**
- * Plugin Name: VGSR Ab-actiaal Prikbord
- * Description: Het ab-actiaal prikbord voor intern gebruik. Vereist VGSR.
- * Plugin URI:  https://github.com/vgsr/vgsr-prikbord
- * Version:     1.0.0
- * Author:      Laurens Offereins
- * Author URI:  https://github.com/lmoffereins
- * Text Domain: vgsr-prikbord
- * Domain Path: /languages/
+ * Plugin Name:       VGSR Ab-actiaal Prikbord
+ * Description:       Het ab-actiaal prikbord voor intern gebruik. Vereist VGSR.
+ * Plugin URI:        https://github.com/vgsr/vgsr-prikbord
+ * Version:           1.0.0
+ * Author:            Laurens Offereins
+ * Author URI:        https://github.com/lmoffereins
+ * Text Domain:       vgsr-prikbord
+ * Domain Path:       /languages/
+ * GitHub Plugin URI: vgsr/vgsr-prikbord
  */
 
 // Exit if accessed directly
