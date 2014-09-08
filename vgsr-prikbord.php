@@ -247,7 +247,7 @@ class VGSR_Prikbord {
 				$title = get_the_title( $attachment->ID );
 
 				// Setup list item as titled link to file
-				$item = sprintf( '<li><a href="%s" title="%s">%s</a></li>',
+				$item = sprintf( '<li><a href="%s" title="%s" target="_blank">%s</a></li>',
 					wp_get_attachment_url( $attachment->ID ),
 					sprintf( __( 'View &#8220;%s&#8221;', 'vgsr-prikbord' ), $title ),
 					$title
