@@ -231,12 +231,11 @@ class VGSR_Prikbord {
 		// Get all attachments
 		$attachments = get_attached_media( false );
 
-		// Setup list title
-		$list_title = '<h3>' . __( 'Attachments', 'vgsr-prikbord' ) . '</h3>';
-		$list_title = apply_filters( 'vgsr_prikbord_items_title', $list_title );
-
 		// Having attachments
 		if ( ! empty( $attachments ) ) {
+
+			// Setup list title
+			$list_title = '<h3>' . __( 'Attachments', 'vgsr-prikbord' ) . '</h3>';
 
 			// Start list
 			$list = '<ul class="attachments prikbord-items">';
@@ -263,10 +262,11 @@ class VGSR_Prikbord {
 
 		// Without attachments
 		} else {
-			$list = '<p>' . __( 'This prikbord item has no attachments.', 'vgsr-prikbord' ) . '</p>';
+			$list_title = '';
+			$list       = '<p>' . __( 'This prikbord item has no attachments.', 'vgsr-prikbord' ) . '</p>';
 		}
 
-		return $content . $list_title . $list;
+		return $content . apply_filters( 'vgsr_prikbord_items_title', $list_title ) . $list;
 	}
 
 	/**
