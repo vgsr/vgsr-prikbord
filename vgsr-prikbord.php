@@ -228,7 +228,7 @@ class VGSR_Prikbord {
 		if ( $this->get_post_type() != $post->post_type )
 			return $content;
 
-		// Get all attachments
+		// Get all attachments. 'false' means all mime-types
 		$attachments = get_attached_media( false );
 
 		// Having attachments
@@ -243,14 +243,25 @@ class VGSR_Prikbord {
 			// Walk all attachments
 			foreach ( $attachments as $attachment ) {
 
+				// Get file
+				$file_path = get_attached_file( $attachment->ID );
+
+				// Check for existence
+				if ( ! file_exists( $file_path ) )
+					continue;
+
+				// Get file details
+				$file_ext  = pathinfo( $file_path, PATHINFO_EXTENSION );
+				$file_size = size_format( filesize( $file_path ) );
+
 				// Get the title once
 				$title = get_the_title( $attachment->ID );
 
 				// Setup list item as titled link to file
 				$item = sprintf( '<li><a href="%s" title="%s" target="_blank">%s</a></li>',
-					wp_get_attachment_url( $attachment->ID ),
+					esc_url( wp_get_attachment_url( $attachment->ID ) ),
 					sprintf( __( 'View &#8220;%s&#8221;', 'vgsr-prikbord' ), $title ),
-					$title
+					$title . sprintf( ' (%s%s)', $file_ext, ! empty( $file_size ) ? ", $file_size" : '' )
 				);
 
 				// Enable item filtering
