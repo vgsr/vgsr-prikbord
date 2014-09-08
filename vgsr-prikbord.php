@@ -193,6 +193,9 @@ class VGSR_Prikbord {
 	/**
 	 * Return whether our post type is vgsr-only markable
 	 *
+	 * Do not enable marking our prikbord items vgsr-only since
+	 * the post type is globally marked as such.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param bool $markable
@@ -201,7 +204,7 @@ class VGSR_Prikbord {
 	 */
 	public function donot_vgsr_only( $markable, $post_type ) {
 
-		// Do not enable marking vgsr-only for our post type
+		// Do not enable marking our items vgsr-only
 		if ( $this->get_post_type() == $post_type )
 			$markable = false;
 
