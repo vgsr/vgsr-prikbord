@@ -230,6 +230,7 @@ class VGSR_Prikbord {
 
 		// Get all attachments. 'false' means all mime-types
 		$attachments = get_attached_media( false );
+		$counter = 0;
 
 		// Having attachments
 		if ( ! empty( $attachments ) ) {
@@ -264,20 +265,24 @@ class VGSR_Prikbord {
 					$title . sprintf( ' (%s%s)', $file_ext, ! empty( $file_size ) ? ", $file_size" : '' )
 				);
 
+				// Increment
+				$counter++;
+
 				// Enable item filtering
 				$list .= apply_filters( 'vgsr_prikbord_attachment_item', $item, $attachment );
 			}
 
 			// Close list
 			$list .= '</ul>';
+		}
 
 		// Without attachments
-		} else {
+		if ( empty( $attachments ) || empty( $counter ) ) {
 			$list_title = '';
 			$list       = '<p>' . __( 'This prikbord item has no attachments.', 'vgsr-prikbord' ) . '</p>';
 		}
 
-		return $content . apply_filters( 'vgsr_prikbord_items_title', $list_title ) . $list;
+		return $content . apply_filters( 'vgsr_prikbord_items_title', $list_title, $counter ) . $list;
 	}
 
 	/**
