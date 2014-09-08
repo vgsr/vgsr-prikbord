@@ -186,7 +186,7 @@ class VGSR_Prikbord {
 			'can_export'          => true,
 			'hierarchical'        => false,
 			'query_var'           => true,
-			'menu_icon'           => 'dashicons-pressthis'
+			'menu_icon'           => 'dashicons-pressthis' // prikbord icon
 		) );
 	}
 
