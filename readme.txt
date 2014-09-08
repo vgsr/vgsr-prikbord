@@ -23,8 +23,11 @@ Create prikbord items for internal access only. This plugin uses is_user_vgsr() 
 == Changelog ==
 
 = 1.0.2 =
-* Display empty list title when without attachments.
-* Display per attachment file extension and file size.
+* Changed list title to empty when without attachments.
+* Added display per attachment file extension and file size.
+
+= 1.0.1 =
+* Added GHU plugin header
 
 = 1.0.0 =
 * First release
