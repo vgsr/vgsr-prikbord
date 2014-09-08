@@ -3,7 +3,7 @@ Contributors: offereins
 Tags: vgsr, prikbord
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,10 @@ Create prikbord items for internal access only. This plugin uses is_user_vgsr() 
 4. Create a new Prikbord Item in Dashboard > Prikbord.
 
 == Changelog ==
+
+= 1.0.2 =
+* Display empty list title when without attachments.
+* Display per attachment file extension and file size.
 
 = 1.0.0 =
 * First release
