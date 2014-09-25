@@ -22,6 +22,9 @@ Create prikbord items for internal access only. This plugin uses is_user_vgsr() 
 
 == Changelog ==
 
+= 1.0.3 =
+* Changed vgsr-only logic for compat with VGSR 0.0.7.
+
 = 1.0.2 =
 * Changed list title to empty when without attachments.
 * Added display per attachment file extension and file size.
