@@ -99,8 +99,8 @@ class VGSR_Prikbord {
 		add_action( "manage_{$post_type}_posts_columns",       array( $this, 'add_admin_column'         )        );
 		add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'add_admin_column_content' ), 10, 2 );
 
-		// VGSR-only
-		add_filter( 'vgsr_only_is_post_type_markable', array( $this, 'donot_vgsr_only' ), 10, 2 );
+		// VGSR
+		add_filter( 'vgsr_only_post_types', array( $this, 'vgsr_only_post_type' ) );
 	}
 
 	/**
@@ -191,24 +191,32 @@ class VGSR_Prikbord {
 	}
 
 	/**
-	 * Return whether our post type is vgsr-only markable
+	 * Return whether our post type can be marked vgsr-only
 	 *
-	 * Do not enable marking our prikbord items vgsr-only since
-	 * the post type is globally marked as such.
+	 * Since our prikbord items are globally marked vgsr-only, single
+	 * posts should not have to. By default all public post types are
+	 * used, but in case of marking vgsr-only we'd like to inverse
+	 * this, so that for vgsr users it will not be seen as such, for
+	 * non-vgsr users it will.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0.3
 	 *
-	 * @param bool $markable
-	 * @param string $post_type Post type name
-	 * @return bool Post type is markable
+	 * @param array $post_type Post types that can be marked vgsr-only
+	 * @return array Post types that can be marked
 	 */
-	public function donot_vgsr_only( $markable, $post_type ) {
+	public function vgsr_only_post_type( $post_types ) {
 
-		// Do not enable marking our items vgsr-only
-		if ( $this->get_post_type() == $post_type )
-			$markable = false;
+		// Remove for vgsr users
+		if ( is_user_vgsr() ) {
+			$post_types = array_diff( $post_types, array( $this->get_post_type() ) );
 
-		return $markable;
+		// Add for non-vgsr users
+		} else {
+			$post_types[] = $this->get_post_type();
+			$post_types   = array_unique( $post_types );
+		}
+
+		return $post_types;
 	}
 
 	/** Template **************************************************************/
