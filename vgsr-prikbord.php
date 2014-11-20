@@ -370,14 +370,11 @@ class VGSR_Prikbord {
 	 * @param WP_Post $post Post object
 	 */
 	public function add_admin_column_content( $column, $post_id ) {
-		$content = '';
 
 		// This is the attachments column
 		if ( 'attachments' == $column ) {
-			$content = $this->get_post_attachments_count( $post_id );
+			echo $this->get_post_attachments_count( $post_id );
 		}
-
-		echo $content;
 	}
 }
 
