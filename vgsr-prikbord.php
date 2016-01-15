@@ -11,7 +11,7 @@
  * Plugin Name:       VGSR Ab-actiaal Prikbord
  * Description:       Het ab-actiaal prikbord voor intern gebruik. Vereist VGSR.
  * Plugin URI:        https://github.com/vgsr/vgsr-prikbord
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            Laurens Offereins
  * Author URI:        https://github.com/lmoffereins
  * Text Domain:       vgsr-prikbord
