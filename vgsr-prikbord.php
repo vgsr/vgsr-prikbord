@@ -20,7 +20,7 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'VGSR_Prikbord' ) ) :
 /**
@@ -95,12 +95,12 @@ class VGSR_Prikbord {
 		add_filter( 'the_content', array( $this, 'append_attachments' ) );
 
 		// Admin columns
-		add_action( 'vgsr_admin_head', array( $this, 'add_admin_styles' ) );
-		add_action( "manage_{$post_type}_posts_columns",       array( $this, 'add_admin_column'         )        );
-		add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'add_admin_column_content' ), 10, 2 );
+		add_action( 'vgsr_admin_head',                         array( $this, 'print_admin_scripts' )        );
+		add_action( "manage_{$post_type}_posts_columns",       array( $this, 'add_columns'         )        );
+		add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'add_column_content'  ), 10, 2 );
 
 		// VGSR
-		add_filter( 'vgsr_only_post_types', array( $this, 'vgsr_only_post_type' ) );
+		add_filter( 'vgsr_post_types', array( $this, 'vgsr_post_type' ) );
 	}
 
 	/**
@@ -191,20 +191,16 @@ class VGSR_Prikbord {
 	}
 
 	/**
-	 * Return whether our post type can be marked vgsr-only
+	 * Return whether our post type can be exclusive
 	 *
-	 * Since our prikbord items are globally marked vgsr-only, single
-	 * posts should not have to. By default all public post types are
-	 * used, but in case of marking vgsr-only we'd like to inverse
-	 * this, so that for vgsr users it will not be seen as such, for
-	 * non-vgsr users it will.
+	 * Exclusivity for prikbord items is handled by this plugin.
 	 *
 	 * @since 1.0.3
 	 *
-	 * @param array $post_type Post types that can be marked vgsr-only
+	 * @param array $post_type Post types that can be exclusive
 	 * @return array Post types that can be marked
 	 */
-	public function vgsr_only_post_type( $post_types ) {
+	public function vgsr_post_type( $post_types ) {
 
 		// Remove for vgsr users
 		if ( is_user_vgsr() ) {
@@ -330,11 +326,13 @@ class VGSR_Prikbord {
 	 *
 	 * @since 1.0.0
 	 */
-	public function add_admin_styles() {
+	public function print_admin_scripts() {
 
 		// Bail if we're not on a prikbord admin screen
 		if ( ! isset( get_current_screen()->post_type ) || $this->get_post_type() != get_current_screen()->post_type )
-			return; ?>
+			return;
+
+		?>
 
 		<style type="text/css">
 			.fixed .column-attachments {
@@ -353,7 +351,7 @@ class VGSR_Prikbord {
 	 * @param array $columns Columns
 	 * @return array Columns
 	 */
-	public function add_admin_column( $columns ) {
+	public function add_columns( $columns ) {
 
 		// Add attachments admin column
 		$columns['attachments'] = __( 'Attachments', 'vgsr-prikbord' );
@@ -369,7 +367,7 @@ class VGSR_Prikbord {
 	 * @param string $column Column name
 	 * @param WP_Post $post Post object
 	 */
-	public function add_admin_column_content( $column, $post_id ) {
+	public function add_column_content( $column, $post_id ) {
 
 		// This is the attachments column
 		if ( 'attachments' == $column ) {
