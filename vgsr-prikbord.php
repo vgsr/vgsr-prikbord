@@ -98,9 +98,6 @@ class VGSR_Prikbord {
 		add_action( 'vgsr_admin_head',                         array( $this, 'print_admin_scripts' )        );
 		add_action( "manage_{$post_type}_posts_columns",       array( $this, 'add_columns'         )        );
 		add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'add_column_content'  ), 10, 2 );
-
-		// VGSR
-		add_filter( 'vgsr_post_types', array( $this, 'vgsr_post_type' ) );
 	}
 
 	/**
@@ -156,63 +153,49 @@ class VGSR_Prikbord {
 	 * @since 1.0.0
 	 */
 	public function register_post_type() {
-		register_post_type( $this->get_post_type(), array(
-			'labels' => array(
-				'name'               => __( 'Prikbord Items',           'vgsr-prikbord' ),
-				'menu_name'          => __( 'Prikbord',                 'vgsr-prikbord' ),
-				'singular_name'      => __( 'Prikbord Item',            'vgsr-prikbord' ),
-				'all_items'          => __( 'All Prikbord Items',       'vgsr-prikbord' ),
-				'add_new'            => __( 'New Prikbord Item',        'vgsr-prikbord' ),
-				'add_new_item'       => __( 'Create New Prikbord Item', 'vgsr-prikbord' ),
-				'edit'               => __( 'Edit',                     'vgsr-prikbord' ),
-				'edit_item'          => __( 'Edit Prikbord Item',       'vgsr-prikbord' ),
-				'new_item'           => __( 'New Prikbord Item',        'vgsr-prikbord' ),
-				'view'               => __( 'View Prikbord Item',       'vgsr-prikbord' ),
-				'view_item'          => __( 'View Prikbord Item',       'vgsr-prikbord' ),
-				'search_items'       => __( 'Search Prikbord Items',    'vgsr-prikbord' ),
-				'not_found'          => __( 'No items found',           'vgsr-prikbord' ),
-				'not_found_in_trash' => __( 'No items found in Trash',  'vgsr-prikbord' ),
-			),
-			'rewrite'             => array( 'slug' => 'prikbord', 'with_front' => false ),
-			'supports'            => array( 'title', 'editor' ),
-			'description'         => __( 'VGSR Prikbord Items', 'vgsr-prikbord' ),
-			// 'menu_position'       => ,
-			'has_archive'         => 'prikbord',
-			'exclude_from_search' => ! is_user_vgsr(),
-			'publicly_queryable'  => is_user_vgsr(),
-			'show_in_nav_menus'   => true,
-			'public'              => is_user_vgsr(), // Hide prikbord for non-vgsr
-			'show_ui'             => true,
-			'can_export'          => true,
-			'hierarchical'        => false,
-			'query_var'           => true,
-			'menu_icon'           => 'dashicons-pressthis' // prikbord icon
-		) );
-	}
 
-	/**
-	 * Return whether our post type can be exclusive
-	 *
-	 * Exclusivity for prikbord items is handled by this plugin.
-	 *
-	 * @since 1.0.3
-	 *
-	 * @param array $post_type Post types that can be exclusive
-	 * @return array Post types that can be marked
-	 */
-	public function vgsr_post_type( $post_types ) {
+		// Check user status
+		$access = is_user_vgsr();
 
-		// Remove for vgsr users
-		if ( is_user_vgsr() ) {
-			$post_types = array_diff( $post_types, array( $this->get_post_type() ) );
+		// Define post type labels
+		$labels = array(
+			'name'               => __( 'Prikbord Items',           'vgsr-prikbord' ),
+			'menu_name'          => __( 'Prikbord',                 'vgsr-prikbord' ),
+			'singular_name'      => __( 'Prikbord Item',            'vgsr-prikbord' ),
+			'all_items'          => __( 'All Prikbord Items',       'vgsr-prikbord' ),
+			'add_new'            => __( 'New Prikbord Item',        'vgsr-prikbord' ),
+			'add_new_item'       => __( 'Create New Prikbord Item', 'vgsr-prikbord' ),
+			'edit'               => __( 'Edit',                     'vgsr-prikbord' ),
+			'edit_item'          => __( 'Edit Prikbord Item',       'vgsr-prikbord' ),
+			'new_item'           => __( 'New Prikbord Item',        'vgsr-prikbord' ),
+			'view'               => __( 'View Prikbord Item',       'vgsr-prikbord' ),
+			'view_item'          => __( 'View Prikbord Item',       'vgsr-prikbord' ),
+			'search_items'       => __( 'Search Prikbord Items',    'vgsr-prikbord' ),
+			'not_found'          => __( 'No items found',           'vgsr-prikbord' ),
+			'not_found_in_trash' => __( 'No items found in Trash',  'vgsr-prikbord' ),
+		);
 
-		// Add for non-vgsr users
-		} else {
-			$post_types[] = $this->get_post_type();
-			$post_types   = array_unique( $post_types );
-		}
-
-		return $post_types;
+		// Register the post type
+		register_post_type(
+			$this->get_post_type(),
+			array(
+				'labels'              => $labels,
+				'rewrite'             => array( 'slug' => 'prikbord', 'with_front' => false ),
+				'supports'            => array( 'title', 'editor' ),
+				'description'         => __( 'VGSR Prikbord Items', 'vgsr-prikbord' ),
+				'has_archive'         => 'prikbord',
+				'exclude_from_search' => ! $access,
+				'publicly_queryable'  => $access,
+				'show_in_nav_menus'   => true,
+				'public'              => $access, // Hide prikbord for non-vgsr
+				'show_ui'             => true,
+				'can_export'          => true,
+				'hierarchical'        => false,
+				'query_var'           => true,
+				'menu_icon'           => 'dashicons-pressthis',
+				'vgsr'                => true // VGSR exclusive post type
+			)
+		);
 	}
 
 	/** Template **************************************************************/
