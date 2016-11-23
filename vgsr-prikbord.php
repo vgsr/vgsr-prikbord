@@ -89,7 +89,8 @@ class VGSR_Prikbord {
 		$post_type = $this->get_post_type();
 
 		// Register prikbord items
-		add_action( 'init', array( $this, 'register_post_type' ), 11 );
+		add_action( 'init',        array( $this, 'register_post_type' ), 11 );
+		add_action( 'parse_query', array( $this, 'parse_query'        )     );
 
 		// Append attachments to post content
 		add_filter( 'the_content', array( $this, 'append_attachments' ) );
@@ -196,6 +197,45 @@ class VGSR_Prikbord {
 				'vgsr'                => true // VGSR exclusive post type
 			)
 		);
+	}
+
+	/**
+	 * Add checks for plugin conditions to parse_query action
+	 *
+	 * @since 1.0.4
+	 *
+	 * @param WP_Query $posts_query
+	 */
+	public function parse_query( $posts_query ) {
+
+		// Bail when this is not the main loop
+		if ( ! $posts_query->is_main_query() )
+			return;
+
+		// Bail when filters are suppressed on this query
+		if ( true === $posts_query->get( 'suppress_filters' ) )
+			return;
+
+		// Bail when in admin
+		if ( is_admin() )
+			return;
+
+		/**
+		 * Find out whether this is still a Prikbord request, even though the post type
+		 * was defined as non-public. In that case, WP couldn't match the query vars. This
+		 * way we force WP to 404, and not default to the blog index when nothing matched.
+		 */
+		$post_type_object = get_post_type_object( $this->get_post_type() );
+		$wp_query_vars    = wp_parse_args( $GLOBALS['wp']->matched_query, array( 'post_type' => false, $post_type_object->query_var => false ) );
+		$is_prikbord      = $post_type_object->name === $wp_query_vars['post_type'] || ! empty( $wp_query_vars[ $post_type_object->query_var ] );
+
+		/**
+		 * 404 and bail when the user has no access.
+		 */
+		if ( $is_prikbord && ! is_user_vgsr() ) {
+			$posts_query->set_404();
+			return;
+		}
 	}
 
 	/** Template **************************************************************/
