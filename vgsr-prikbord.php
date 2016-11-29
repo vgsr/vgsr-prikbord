@@ -42,10 +42,12 @@ class VGSR_Prikbord {
 	 * @since 1.0.0
 	 *
 	 * @uses VGSR_Prikbord::setup_globals()
+	 * @uses VGSR_Prikbord::includes()
 	 * @uses VGSR_Prikbord::setup_actions()
 	 */
 	public function __construct() {
 		$this->setup_globals();
+		$this->includes();
 		$this->setup_actions();
 	}
 
@@ -60,22 +62,37 @@ class VGSR_Prikbord {
 
 		/** Versions **********************************************************/
 
-		$this->version    = '1.0.2';
+		$this->version      = '1.0.2';
 
 		/** Paths *************************************************************/
 
 		// Setup some base path and URL information
-		$this->file       = __FILE__;
-		$this->basename   = plugin_basename( $this->file );
-		$this->plugin_dir = plugin_dir_path( $this->file );
-		$this->plugin_url = plugin_dir_url ( $this->file );
+		$this->file         = __FILE__;
+		$this->basename     = plugin_basename( $this->file );
+		$this->plugin_dir   = plugin_dir_path( $this->file );
+		$this->plugin_url   = plugin_dir_url ( $this->file );
+
+		// Includes
+		$this->includes_dir = trailingslashit( $this->plugin_dir . 'includes' );
+		$this->includes_url = trailingslashit( $this->plugin_url . 'includes' );
 
 		// Languages
-		$this->lang_dir   = trailingslashit( $this->plugin_dir . 'languages' );
+		$this->lang_dir     = trailingslashit( $this->plugin_dir . 'languages' );
 
 		/** Users *************************************************************/
 
 		$this->post_type_id = apply_filters( 'vgsr_prikbord_post_type', 'vgsr_prikbord' );
+	}
+
+	/**
+	 * Include the required files
+	 *
+	 * @since 1.1.0
+	 */
+	private function includes() {
+		require( $this->includes_dir . 'actions.php'     );
+		require( $this->includes_dir . 'functions.php'   );
+		require( $this->includes_dir . 'sub-actions.php' );
 	}
 
 	/**
