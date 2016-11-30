@@ -265,7 +265,7 @@ final class VGSR_Prikbord {
 		if ( ! empty( $attachments ) ) {
 
 			// Setup list title
-			$list_title = '<h3>' . __( 'Attachments', 'vgsr-prikbord' ) . '</h3>';
+			$list_title = ! empty( $content ) ? '<h3>' . __( 'Attachments', 'vgsr-prikbord' ) . '</h3>' : '';
 
 			// Start list
 			$list = '<ul class="attachments prikbord-items">';
