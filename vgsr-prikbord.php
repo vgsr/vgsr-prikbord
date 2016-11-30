@@ -164,29 +164,11 @@ class VGSR_Prikbord {
 		// Check user status
 		$access = is_user_vgsr();
 
-		// Define post type labels
-		$labels = array(
-			'name'               => __( 'Prikbord Items',           'vgsr-prikbord' ),
-			'menu_name'          => __( 'Prikbord',                 'vgsr-prikbord' ),
-			'singular_name'      => __( 'Prikbord Item',            'vgsr-prikbord' ),
-			'all_items'          => __( 'All Prikbord Items',       'vgsr-prikbord' ),
-			'add_new'            => __( 'New Prikbord Item',        'vgsr-prikbord' ),
-			'add_new_item'       => __( 'Create New Prikbord Item', 'vgsr-prikbord' ),
-			'edit'               => __( 'Edit',                     'vgsr-prikbord' ),
-			'edit_item'          => __( 'Edit Prikbord Item',       'vgsr-prikbord' ),
-			'new_item'           => __( 'New Prikbord Item',        'vgsr-prikbord' ),
-			'view'               => __( 'View Prikbord Item',       'vgsr-prikbord' ),
-			'view_item'          => __( 'View Prikbord Item',       'vgsr-prikbord' ),
-			'search_items'       => __( 'Search Prikbord Items',    'vgsr-prikbord' ),
-			'not_found'          => __( 'No items found',           'vgsr-prikbord' ),
-			'not_found_in_trash' => __( 'No items found in Trash',  'vgsr-prikbord' ),
-		);
-
 		// Register the post type
 		register_post_type(
 			vgsr_prikbord_get_item_post_type(),
 			array(
-				'labels'              => $labels,
+				'labels'              => vgsr_prikbord_get_item_post_type_labels(),
 				'rewrite'             => array( 'slug' => 'prikbord', 'with_front' => false ),
 				'supports'            => array( 'title', 'editor' ),
 				'description'         => __( 'VGSR Prikbord Items', 'vgsr-prikbord' ),
