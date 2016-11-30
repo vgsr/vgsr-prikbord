@@ -28,28 +28,37 @@ if ( ! class_exists( 'VGSR_Prikbord' ) ) :
  *
  * @since 1.0.0
  */
-class VGSR_Prikbord {
+final class VGSR_Prikbord {
 
 	/**
-	 * The prikbord post type name
-	 * @var string
-	 */
-	private $post_type_id;
-
-	/**
-	 * Setup class structure
+	 * Setup and return the singleton pattern
 	 *
 	 * @since 1.0.0
 	 *
 	 * @uses VGSR_Prikbord::setup_globals()
 	 * @uses VGSR_Prikbord::includes()
 	 * @uses VGSR_Prikbord::setup_actions()
+	 * @return The single VGSR_Prikbord
 	 */
-	public function __construct() {
-		$this->setup_globals();
-		$this->includes();
-		$this->setup_actions();
+	public static function instance() {
+
+		// Store instance locally
+		static $instance = null;
+
+		if ( null === $instance ) {
+			$instance = new VGSR_Prikbord;
+			$instance->setup_globals();
+			$instance->includes();
+			$instance->setup_actions();
+		}
+
+		return $instance;
 	}
+
+	/**
+	 * Prevent the plugin class from being loaded more than once
+	 */
+	private function __construct() { /* Nothing to do */ }
 
 	/** Private Methods *******************************************************/
 
@@ -101,6 +110,10 @@ class VGSR_Prikbord {
 	 * @since 1.0.0
 	 */
 	private function setup_actions() {
+
+		// Bail when VGSR is not active
+		if ( ! function_exists( 'vgsr' ) )
+			return;
 
 		// Fetch post type for later use
 		$post_type = vgsr_prikbord_get_item_post_type();
@@ -392,22 +405,17 @@ register_activation_hook(   __FILE__, array( 'VGSR_Prikbord', 'activation'   ) )
 register_deactivation_hook( __FILE__, array( 'VGSR_Prikbord', 'deactivation' ) );
 
 /**
- * Setup prikbord plugin
+ * Return single instance of the plugin's main class
  *
  * @since 1.0.0
  *
- * @uses VGSR_Prikbord
+ * @return VGSR_Prikbord
  */
 function vgsr_prikbord() {
-
-	// Bail if VGSR is not active
-	if ( ! function_exists( 'vgsr' ) )
-		return;
-
-	new VGSR_Prikbord;
+	return VGSR_Prikbord::instance();
 }
 
-// Fire when VGSR is alive
-add_action( 'vgsr_ready', 'vgsr_prikbord' );
+// Initiate plugin on load
+vgsr_prikbord();
 
 endif; // class_exists
