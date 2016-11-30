@@ -26,7 +26,7 @@ function vgsr_prikbord_get_item_post_type() {
 /**
  * Return the labels for the Prikbord Item post type
  *
- * @since 1.0.0
+ * @since 1.1.0
  *
  * @uses apply_filters() Calls 'vgsr_prikbord_get_item_post_type_labels'
  * @return array Prikbord Item post type labels
@@ -74,7 +74,7 @@ function vgsr_prikbord_get_item_post_type_rewrite() {
 /**
  * Return an array of features the Prikbord Item post type supports
  *
- * @since 1.0.0
+ * @since 1.1.0
  *
  * @uses apply_filters() Calls 'vgsr_prikbord_get_item_post_type_supports'
  * @return array Prikbord Item post type support
@@ -91,7 +91,7 @@ function vgsr_prikbord_get_item_post_type_supports() {
 /**
  * Return whether the current user has basic access
  *
- * @since 1.0.0
+ * @since 1.1.0
  *
  * @param int $user_id User ID. Optional. Defaults to the current user.
  * @return bool Has the user access?
