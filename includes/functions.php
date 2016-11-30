@@ -17,9 +17,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.1.0
  *
- * @return string Prikbord post type name
+ * @return string Prikbord Item post type name
  */
-public function vgsr_prikbord_get_item_post_type() {
+function vgsr_prikbord_get_item_post_type() {
 	return vgsr_prikbord()->post_type_id;
 }
 
@@ -31,7 +31,7 @@ public function vgsr_prikbord_get_item_post_type() {
  * @uses apply_filters() Calls 'vgsr_prikbord_get_item_post_type_labels'
  * @return array Prikbord Item post type labels
  */
-public function vgsr_prikbord_get_item_post_type_labels() {
+function vgsr_prikbord_get_item_post_type_labels() {
 	return apply_filters( 'vgsr_prikbord_get_item_post_type_labels', array(
 		'name'                  => __( 'Prikbord Items',                 'vgsr-prikbord' ),
 		'menu_name'             => __( 'Prikbord',                       'vgsr-prikbord' ),
