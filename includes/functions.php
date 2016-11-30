@@ -55,3 +55,23 @@ function vgsr_prikbord_get_item_post_type_labels() {
 		'items_list'            => __( 'Prikbord Items list',            'vgsr-prikbord' ),
 	) );
 }
+
+/** User **********************************************************************/
+
+/**
+ * Return whether the current user has basic access
+ *
+ * @since 1.0.0
+ *
+ * @param int $user_id User ID. Optional. Defaults to the current user.
+ * @return bool Has the user access?
+ */
+function vgsr_prikbord_check_access( $user_id = 0 ) {
+
+	// Default to the current user
+	if ( empty( $user_id ) ) {
+		$user_id = get_current_user_id();
+	}
+
+	return function_exists( 'vgsr' ) && is_user_vgsr( $user_id );
+}

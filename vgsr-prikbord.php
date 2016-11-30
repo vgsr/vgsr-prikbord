@@ -175,7 +175,7 @@ final class VGSR_Prikbord {
 	public function register_post_type() {
 
 		// Check user status
-		$access = is_user_vgsr();
+		$access = vgsr_prikbord_check_access();
 
 		// Register the post type
 		register_post_type(
@@ -233,7 +233,7 @@ final class VGSR_Prikbord {
 		/**
 		 * 404 and bail when the user has no access.
 		 */
-		if ( $is_prikbord && ! is_user_vgsr() ) {
+		if ( $is_prikbord && ! vgsr_prikbord_check_access() ) {
 			$posts_query->set_404();
 			return;
 		}
