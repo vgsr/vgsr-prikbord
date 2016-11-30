@@ -56,6 +56,36 @@ function vgsr_prikbord_get_item_post_type_labels() {
 	) );
 }
 
+/**
+ * Return the Prikbord Item post type rewrite settings
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'vgsr_prikbord_get_item_post_type_rewrite'
+ * @return array Prikbord Item post type support
+ */
+function vgsr_prikbord_get_item_post_type_rewrite() {
+	return apply_filters( 'vgsr_prikbord_get_item_post_type_rewrite', array(
+		'slug'       => 'prikbord',
+		'with_front' => false
+	) );
+}
+
+/**
+ * Return an array of features the Prikbord Item post type supports
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'vgsr_prikbord_get_item_post_type_supports'
+ * @return array Prikbord Item post type support
+ */
+function vgsr_prikbord_get_item_post_type_supports() {
+	return apply_filters( 'vgsr_prikbord_get_item_post_type_supports', array(
+		'title',
+		'editor'
+	) );
+}
+
 /** User **********************************************************************/
 
 /**
