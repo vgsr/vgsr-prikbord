@@ -103,7 +103,7 @@ class VGSR_Prikbord {
 	private function setup_actions() {
 
 		// Fetch post type for later use
-		$post_type = $this->get_post_type();
+		$post_type = vgsr_prikbord_get_item_post_type();
 
 		// Register prikbord items
 		add_action( 'init',        array( $this, 'register_post_type' ), 11 );
@@ -153,17 +153,6 @@ class VGSR_Prikbord {
 	/** Public Methods ********************************************************/
 
 	/**
-	 * Return the prikbord post type
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string Prikbord post type name
-	 */
-	public function get_post_type() {
-		return $this->post_type_id;
-	}
-
-	/**
 	 * Register the prikbord post type
 	 *
 	 * Hide prikbord items for non-vgsr users.
@@ -195,7 +184,7 @@ class VGSR_Prikbord {
 
 		// Register the post type
 		register_post_type(
-			$this->get_post_type(),
+			vgsr_prikbord_get_item_post_type(),
 			array(
 				'labels'              => $labels,
 				'rewrite'             => array( 'slug' => 'prikbord', 'with_front' => false ),
@@ -242,7 +231,7 @@ class VGSR_Prikbord {
 		 * was defined as non-public. In that case, WP couldn't match the query vars. This
 		 * way we force WP to 404, and not default to the blog index when nothing matched.
 		 */
-		$post_type_object = get_post_type_object( $this->get_post_type() );
+		$post_type_object = get_post_type_object( vgsr_prikbord_get_item_post_type() );
 		$wp_query_vars    = wp_parse_args( $GLOBALS['wp']->matched_query, array( 'post_type' => false, $post_type_object->query_var => false ) );
 		$is_prikbord      = $post_type_object->name === $wp_query_vars['post_type'] || ! empty( $wp_query_vars[ $post_type_object->query_var ] );
 
@@ -269,7 +258,7 @@ class VGSR_Prikbord {
 		$post = get_post();
 
 		// Bail if this is not a prikbord item
-		if ( $this->get_post_type() != $post->post_type )
+		if ( vgsr_prikbord_get_item_post_type() != $post->post_type )
 			return $content;
 
 		// Get all attachments. 'false' means all mime-types
@@ -369,7 +358,7 @@ class VGSR_Prikbord {
 	public function print_admin_scripts() {
 
 		// Bail if we're not on a prikbord admin screen
-		if ( ! isset( get_current_screen()->post_type ) || $this->get_post_type() != get_current_screen()->post_type )
+		if ( ! isset( get_current_screen()->post_type ) || vgsr_prikbord_get_item_post_type() != get_current_screen()->post_type )
 			return;
 
 		?>
