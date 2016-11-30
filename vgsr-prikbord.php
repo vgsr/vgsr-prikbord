@@ -99,9 +99,18 @@ final class VGSR_Prikbord {
 	 * @since 1.1.0
 	 */
 	private function includes() {
+
+		/** Core **************************************************************/
+
 		require( $this->includes_dir . 'actions.php'     );
 		require( $this->includes_dir . 'functions.php'   );
 		require( $this->includes_dir . 'sub-actions.php' );
+
+		/** Admin *************************************************************/
+
+		if ( is_admin() ) {
+			require( $this->includes_dir . 'admin.php' );
+		}
 	}
 
 	/**
@@ -115,20 +124,12 @@ final class VGSR_Prikbord {
 		if ( ! function_exists( 'vgsr' ) )
 			return;
 
-		// Fetch post type for later use
-		$post_type = vgsr_prikbord_get_item_post_type();
-
 		// Register prikbord items
-		add_action( 'init',        array( $this, 'register_post_type' ), 11 );
+		add_action( 'vgsr_init',   array( $this, 'register_post_type' ), 11 );
 		add_action( 'parse_query', array( $this, 'parse_query'        )     );
 
 		// Append attachments to post content
 		add_filter( 'the_content', array( $this, 'append_attachments' ) );
-
-		// Admin columns
-		add_action( 'vgsr_admin_head',                         array( $this, 'print_admin_scripts' )        );
-		add_action( "manage_{$post_type}_posts_columns",       array( $this, 'add_columns'         )        );
-		add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'add_column_content'  ), 10, 2 );
 	}
 
 	/**
@@ -341,62 +342,6 @@ final class VGSR_Prikbord {
 		$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM {$wpdb->posts} WHERE post_type = %s AND post_parent = %d", 'attachment', $post_id ) );
 
 		return apply_filters( 'vgsr_prikbord_get_post_attachment_count', $count, $post_id );
-	}
-
-	/** Admin *****************************************************************/
-
-	/**
-	 * Output some prikbord admin specific styles
-	 *
-	 * @since 1.0.0
-	 */
-	public function print_admin_scripts() {
-
-		// Bail if we're not on a prikbord admin screen
-		if ( ! isset( get_current_screen()->post_type ) || vgsr_prikbord_get_item_post_type() != get_current_screen()->post_type )
-			return;
-
-		?>
-
-		<style type="text/css">
-			.fixed .column-attachments {
-				width: 12%;
-			}
-		</style>
-
-		<?php
-	}
-
-	/**
-	 * Add columns to prikbord admin edit screen
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param array $columns Columns
-	 * @return array Columns
-	 */
-	public function add_columns( $columns ) {
-
-		// Add attachments admin column
-		$columns['attachments'] = __( 'Attachments', 'vgsr-prikbord' );
-
-		return $columns;
-	}
-
-	/**
-	 * Display custom column content for prikbord admin edit screen
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $column Column name
-	 * @param WP_Post $post Post object
-	 */
-	public function add_column_content( $column, $post_id ) {
-
-		// This is the attachments column
-		if ( 'attachments' == $column ) {
-			echo $this->get_post_attachments_count( $post_id );
-		}
 	}
 }
 
