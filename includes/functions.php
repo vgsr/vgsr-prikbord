@@ -24,6 +24,17 @@ function vgsr_prikbord_get_item_post_type() {
 }
 
 /**
+ * Return the Prikbord Item slug
+ *
+ * @since 1.1.0
+ *
+ * @return string Prikbord Item slug
+ */
+function vgsr_prikbord_get_item_slug() {
+	return apply_filters( 'vgsr_prikbord_get_item_slug', 'prikbord' );
+}
+
+/**
  * Return the labels for the Prikbord Item post type
  *
  * @since 1.1.0
@@ -59,14 +70,14 @@ function vgsr_prikbord_get_item_post_type_labels() {
 /**
  * Return the Prikbord Item post type rewrite settings
  *
- * @since 1.0.0
+ * @since 1.1.0
  *
  * @uses apply_filters() Calls 'vgsr_prikbord_get_item_post_type_rewrite'
  * @return array Prikbord Item post type support
  */
 function vgsr_prikbord_get_item_post_type_rewrite() {
 	return apply_filters( 'vgsr_prikbord_get_item_post_type_rewrite', array(
-		'slug'       => 'prikbord',
+		'slug'       => vgsr_prikbord_get_item_slug(),
 		'with_front' => false
 	) );
 }

@@ -185,7 +185,7 @@ final class VGSR_Prikbord {
 				'rewrite'             => vgsr_prikbord_get_item_post_type_rewrite(),
 				'supports'            => vgsr_prikbord_get_item_post_type_supports(),
 				'description'         => __( 'VGSR Prikbord Items', 'vgsr-prikbord' ),
-				'has_archive'         => 'prikbord',
+				'has_archive'         => true,
 				'exclude_from_search' => ! $access,
 				'publicly_queryable'  => $access,
 				'show_in_nav_menus'   => true,
