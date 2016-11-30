@@ -183,18 +183,18 @@ final class VGSR_Prikbord {
 			vgsr_prikbord_get_item_post_type(),
 			array(
 				'labels'              => vgsr_prikbord_get_item_post_type_labels(),
-				'rewrite'             => vgsr_prikbord_get_item_post_type_rewrite(),
 				'supports'            => vgsr_prikbord_get_item_post_type_supports(),
 				'description'         => __( 'VGSR Prikbord Items', 'vgsr-prikbord' ),
-				'has_archive'         => true,
-				'exclude_from_search' => ! $access,
-				'publicly_queryable'  => $access,
-				'show_in_nav_menus'   => true,
-				'public'              => $access, // Hide prikbord for non-vgsr
-				'show_ui'             => true,
-				'can_export'          => true,
+				'capabilities'        => vgsr_prikbord_get_item_post_type_caps(),
+				'capability_type'     => array( 'vgsr_prikbord_item', 'vgsr_prikbord_items' ),
 				'hierarchical'        => false,
+				'public'              => $access,
+				'has_archive'         => true,
+				'rewrite'             => vgsr_prikbord_get_item_post_type_rewrite(),
 				'query_var'           => true,
+				'exclude_from_search' => ! $access,
+				'show_ui'             => current_user_can( 'vgsr_prikbord_item_admin' ),
+				'show_in_nav_menus'   => $access,
 				'menu_icon'           => 'dashicons-pressthis',
 				'vgsr'                => true // VGSR exclusive post type
 			)

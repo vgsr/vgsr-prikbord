@@ -97,6 +97,27 @@ function vgsr_prikbord_get_item_post_type_supports() {
 	) );
 }
 
+/**
+ * Return the capability mappings for the Prikbord Item post type
+ *
+ * @since 1.1.0
+ *
+ * @uses apply_filters() Calls 'vgsr_prikbord_get_item_post_type_caps'
+ * @return array Prikbord Item post type caps
+ */
+function vgsr_prikbord_get_item_post_type_caps() {
+	return apply_filters( 'vgsr_prikbord_get_item_post_type_caps', array(
+		'edit_post'           => 'edit_vgsr_prikbord_item',
+		'edit_posts'          => 'edit_vgsr_prikbord_items',
+		'edit_others_posts'   => 'edit_others_vgsr_prikbord_items',
+		'publish_posts'       => 'publish_vgsr_prikbord_items',
+		'read_private_posts'  => 'read_private_vgsr_prikbord_items',
+		'delete_post'         => 'delete_vgsr_prikbord_item',
+		'delete_posts'        => 'delete_vgsr_prikbord_items',
+		'delete_others_posts' => 'delete_others_vgsr_prikbord_items'
+	) );
+}
+
 /** User **********************************************************************/
 
 /**
