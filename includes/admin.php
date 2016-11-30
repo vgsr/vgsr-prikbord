@@ -37,10 +37,12 @@ class VGSR_Prikbord_Admin {
 		// Get post type
 		$post_type = vgsr_prikbord_get_item_post_type();
 
-		// Admin columns
-		add_action( 'vgsr_admin_head',                         array( $this, 'print_admin_scripts' )        );
+		// Columns
 		add_action( "manage_{$post_type}_posts_columns",       array( $this, 'item_columns'        )        );
 		add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'item_column_content' ), 10, 2 );
+
+		// Styles
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
 	/** Public methods **************************************************/
@@ -65,25 +67,28 @@ class VGSR_Prikbord_Admin {
 	}
 
 	/**
-	 * Output admin scripts
+	 * Enqueue or output admin scripts
 	 *
 	 * @since 1.1.0
 	 */
-	public function print_admin_scripts() {
+	public function enqueue_scripts() {
 
 		// Bail when not administrating Prikbord Items
 		if ( $this->bail() )
 			return;
 
-		?>
+		// Define local variable
+		$styles = array();
 
-		<style type="text/css">
-			.fixed .column-attachments {
-				width: 12%;
-			}
-		</style>
+		// List view
+		if ( 'edit' === get_current_screen()->base ) {
+			$styles[] = '.fixed .column-attachments { width: 12%; }';
+		}
 
-		<?php
+		// Add styles to the screen
+		if ( ! empty( $styles ) ) {
+			wp_add_inline_style( 'common', implode( "\n", $styles ) );
+		}
 	}
 
 	/**
