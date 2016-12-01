@@ -119,7 +119,7 @@ class VGSR_Prikbord_Admin {
 
 		// Display attachments count
 		if ( 'attachments' === $column ) {
-			echo vgsr_prikbord()->get_post_attachments_count( $post_id );
+			vgsr_prikbord_item_attachments_count( $post_id );
 		}
 	}
 }

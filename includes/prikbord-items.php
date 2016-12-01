@@ -129,3 +129,38 @@ function vgsr_prikbord_get_item( $item = 0 ) {
 
 	return $item;
 }
+
+/**
+ * Output the Prikbord Item's attachment count
+ *
+ * @since 1.1.0
+ *
+ * @param WP_Post|int $post Optional. Post object or ID. Defaults to the current post.
+ */
+function vgsr_prikbord_item_attachments_count( $post = 0 ) {
+	echo vgsr_prikbord_get_item_attachments_count( $post );
+}
+
+/**
+ * Return the Prikbord Item's attachment count
+ *
+ * @since 1.1.0
+ *
+ * @uses WPDB $wpdb
+ *
+ * @param WP_Post|int $post Optional. Post object or ID. Defaults to the current post.
+ * @return int Post attachment count
+ */
+function vgsr_prikbord_get_item_attachments_count( $post = 0 ) {
+	global $wpdb;
+
+	// Bail when the post does not exist
+	if ( ! $post = vgsr_prikbord_get_item( $post ) )
+		return 0;
+
+	// Query post attachment count
+	$sql   = $wpdb->prepare( "SELECT COUNT(ID) FROM {$wpdb->posts} WHERE post_type = %s AND post_parent = %d", 'attachment', $post->ID );
+	$count = (int) $wpdb->get_var( $sql );
+
+	return apply_filters( 'vgsr_prikbord_get_item_attachment_count', $count, $post );
+}

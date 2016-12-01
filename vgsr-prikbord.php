@@ -282,36 +282,6 @@ final class VGSR_Prikbord {
 
 		return $content . apply_filters( 'vgsr_prikbord_items_title', $list_title, $counter ) . $list;
 	}
-
-	/**
-	 * Return the post attachment count
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param int $post_id Post ID
-	 * @return int Post attachment count
-	 */
-	public function get_post_attachments_count( $post_id ) {
-		global $wpdb;
-
-		// Ensure we have a valid post ID
-		if ( ! is_numeric( $post_id ) ) {
-			global $post;
-
-			if ( ! isset( $post ) ) {
-				return 0;
-			} else {
-				$post_id = $post->ID;
-			}
-		} else {
-			$post_id = (int) $post_id;
-		}
-
-		// Query post attachment count
-		$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM {$wpdb->posts} WHERE post_type = %s AND post_parent = %d", 'attachment', $post_id ) );
-
-		return apply_filters( 'vgsr_prikbord_get_post_attachment_count', $count, $post_id );
-	}
 }
 
 /**
