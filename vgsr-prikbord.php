@@ -102,9 +102,10 @@ final class VGSR_Prikbord {
 
 		/** Core **************************************************************/
 
-		require( $this->includes_dir . 'actions.php'     );
-		require( $this->includes_dir . 'functions.php'   );
-		require( $this->includes_dir . 'sub-actions.php' );
+		require( $this->includes_dir . 'actions.php'        );
+		require( $this->includes_dir . 'functions.php'      );
+		require( $this->includes_dir . 'prikbord-items.php' );
+		require( $this->includes_dir . 'sub-actions.php'    );
 
 		/** Admin *************************************************************/
 
