@@ -137,3 +137,15 @@ function vgsr_prikbord_check_access( $user_id = 0 ) {
 
 	return function_exists( 'vgsr' ) && is_user_vgsr( $user_id );
 }
+
+/** Utility *******************************************************************/
+
+/**
+ * Delete a blogs rewrite rules, so that they are automatically rebuilt on
+ * the subsequent page load.
+ *
+ * @since 1.0.0
+ */
+function vgsr_prikbord_delete_rewrite_rules() {
+	delete_option( 'rewrite_rules' );
+}

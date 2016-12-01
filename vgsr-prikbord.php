@@ -120,9 +120,9 @@ final class VGSR_Prikbord {
 	 */
 	private function setup_actions() {
 
-		// Bail when VGSR is not active
-		if ( ! function_exists( 'vgsr' ) )
-			return;
+		// Add actions to plugin activation and deactivation hooks
+		add_action( 'activate_'   . $this->basename, 'vgsr_prikbord_activation'   );
+		add_action( 'deactivate_' . $this->basename, 'vgsr_prikbord_deactivation' );
 
 		// Register prikbord items
 		add_action( 'vgsr_init',   array( $this, 'register_post_type' ), 11 );
@@ -130,38 +130,6 @@ final class VGSR_Prikbord {
 
 		// Append attachments to post content
 		add_filter( 'the_content', array( $this, 'append_attachments' ) );
-	}
-
-	/**
-	 * Run logic on plugin activation
-	 *
-	 * @since 1.0.0
-	 */
-	public static function activation() {
-
-		// Instatiate plugin once
-		$prikbord = new VGSR_Prikbord;
-
-		// Trigger registering our post type
-		$prikbord->register_post_type();
-
-		// Clear permalinks after post type registration
-		flush_rewrite_rules();
-
-		do_action( 'vgsr_prikbord_activation' );
-	}
-
-	/**
-	 * Run logic on plugin deactivation
-	 *
-	 * @since 1.0.0
-	 */
-	public static function deactivation() {
-
-		// Clear permalinks without our post type
-		flush_rewrite_rules();
-
-		do_action( 'vgsr_prikbord_deactivation' );
 	}
 
 	/** Public Methods ********************************************************/
@@ -204,7 +172,7 @@ final class VGSR_Prikbord {
 	/**
 	 * Add checks for plugin conditions to parse_query action
 	 *
-	 * @since 1.0.4
+	 * @since 1.1.0
 	 *
 	 * @param WP_Query $posts_query
 	 */
@@ -344,10 +312,6 @@ final class VGSR_Prikbord {
 		return apply_filters( 'vgsr_prikbord_get_post_attachment_count', $count, $post_id );
 	}
 }
-
-// Flush rewrite rules on (de)activation
-register_activation_hook(   __FILE__, array( 'VGSR_Prikbord', 'activation'   ) );
-register_deactivation_hook( __FILE__, array( 'VGSR_Prikbord', 'deactivation' ) );
 
 /**
  * Return single instance of the plugin's main class
