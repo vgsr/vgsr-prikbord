@@ -216,6 +216,10 @@ final class VGSR_Prikbord {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'vgsr_prikbord_item_attachment'
+	 * @uses apply_filters() Calls 'vgsr_prikbord_attachment_item'
+	 * @uses apply_filters() Calls 'vgsr_prikbord_items_title'
+	 *
 	 * @param string $content The post content
 	 * @return string Content
 	 */

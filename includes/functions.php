@@ -37,6 +37,7 @@ function vgsr_prikbord_check_access( $user_id = 0 ) {
  *
  * @since 1.1.0
  *
+ * @uses apply_filters() Calls 'vgsr_prikbord_get_item_slug'
  * @return string Prikbord Item slug
  */
 function vgsr_prikbord_get_item_slug() {
