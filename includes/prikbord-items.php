@@ -106,3 +106,26 @@ function vgsr_prikbord_get_item_post_type_caps() {
 		'delete_others_posts' => 'delete_others_vgsr_prikbord_items'
 	) );
 }
+
+/** Template ******************************************************************/
+
+/**
+ * Retreive a Prikbord Item post object
+ *
+ * @since 1.1.0
+ *
+ * @param WP_Post|int $item Optional. Defaults to the current post.
+ * @return WP_Post|bool Post object when found, False otherwise.
+ */
+function vgsr_prikbord_get_item( $item = 0 ) {
+
+	// Get the post
+	$item = get_post( $item );
+
+	// Verify Prikbord Item post type
+	if ( ! $item || vgsr_prikbord_get_item_post_type() != $item->post_type ) {
+		$item = false;
+	}
+
+	return $item;
+}
