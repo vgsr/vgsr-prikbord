@@ -220,67 +220,71 @@ final class VGSR_Prikbord {
 	 * @return string Content
 	 */
 	public function append_attachments( $content ) {
-		$post = get_post();
 
-		// Bail if this is not a prikbord item
-		if ( vgsr_prikbord_get_item_post_type() != $post->post_type )
+		// Bail when this is not a Prikbord Item
+		if ( ! $post = vgsr_prikbord_get_item() )
 			return $content;
 
-		// Get all attachments. 'false' means all mime-types
-		$attachments = get_attached_media( false );
-		$counter = 0;
+		// Get all the Item's attachments. `false` means all mime-types
+		$attachments = get_attached_media( false, $post );
+		$atts_list   = array();
+
+		// Walk attachments
+		foreach ( $attachments as $attachment ) {
+
+			// Get file
+			$file_path = get_attached_file( $attachment->ID );
+
+			// Skip when the file does not exist
+			if ( ! file_exists( $file_path ) )
+				continue;
+
+			// Get file details
+			$file_ext  = pathinfo( $file_path, PATHINFO_EXTENSION );
+			$file_size = size_format( filesize( $file_path ) );
+
+			// Get the title once
+			$title = get_the_title( $attachment->ID );
+
+			// Setup list item as titled link to file
+			$li = sprintf( '<a href="%s" title="%s" target="_blank">%s</a>',
+				esc_url( wp_get_attachment_url( $attachment->ID ) ),
+				sprintf( __( 'View &#8220;%s&#8221;', 'vgsr-prikbord' ), $title ),
+				$title . sprintf( ' (%s%s)', $file_ext, ! empty( $file_size ) ? ", $file_size" : '' )
+			);
+
+			// Enable item filtering
+			$atts_list[ $attachment->ID ] = apply_filters( 'vgsr_prikbord_item_attachment', $li, $attachment );
+		}
+
+		// Start list output
+		$list_title = ! empty( $atts_list ) && ! empty( $content ) ? __( 'Attachments', 'vgsr-prikbord' ) : '';
+		$output     = apply_filters( 'vgsr_prikbord_items_title', $list_title, count( $atts_list ) );
 
 		// Having attachments
-		if ( ! empty( $attachments ) ) {
+		if ( $atts_list ) {
 
-			// Setup list title
-			$list_title = ! empty( $content ) ? '<h3>' . __( 'Attachments', 'vgsr-prikbord' ) . '</h3>' : '';
-
-			// Start list
-			$list = '<ul class="attachments prikbord-items">';
-
-			// Walk all attachments
-			foreach ( $attachments as $attachment ) {
-
-				// Get file
-				$file_path = get_attached_file( $attachment->ID );
-
-				// Check for existence
-				if ( ! file_exists( $file_path ) )
-					continue;
-
-				// Get file details
-				$file_ext  = pathinfo( $file_path, PATHINFO_EXTENSION );
-				$file_size = size_format( filesize( $file_path ) );
-
-				// Get the title once
-				$title = get_the_title( $attachment->ID );
-
-				// Setup list item as titled link to file
-				$item = sprintf( '<li><a href="%s" title="%s" target="_blank">%s</a></li>',
-					esc_url( wp_get_attachment_url( $attachment->ID ) ),
-					sprintf( __( 'View &#8220;%s&#8221;', 'vgsr-prikbord' ), $title ),
-					$title . sprintf( ' (%s%s)', $file_ext, ! empty( $file_size ) ? ", $file_size" : '' )
-				);
-
-				// Increment
-				$counter++;
-
-				// Enable item filtering
-				$list .= apply_filters( 'vgsr_prikbord_attachment_item', $item, $attachment );
+			// Wrap list title
+			if ( ! empty( $ouput ) ) {
+				$output = '<h3>' . $output . "</h3>\n";
 			}
 
-			// Close list
-			$list .= '</ul>';
-		}
+			// Setup attachment list
+			$output .= '<ul class="attachments prikbord-items">';
+			foreach ( $atts_list as $attachment_id => $li ) {
+				$output .= apply_filters( 'vgsr_prikbord_attachment_item', '<li>' . $li . '</li>', $attachment_id );
+			}
+			$output .= '</ul>';
 
 		// Without attachments
-		if ( empty( $attachments ) || empty( $counter ) ) {
-			$list_title = '';
-			$list       = '<p>' . __( 'This prikbord item has no attachments.', 'vgsr-prikbord' ) . '</p>';
+		} else {
+			$output .= '<p>' . __( 'This prikbord item has no attachments.', 'vgsr-prikbord' ) . '</p>';
 		}
 
-		return $content . apply_filters( 'vgsr_prikbord_items_title', $list_title, $counter ) . $list;
+		// Append created attachment list
+		$content .= $output;
+
+		return $content;
 	}
 }
 
